@@ -102,9 +102,23 @@ export PG_HOST="localhost"
 pip install -r requirements.txt
 ```
 
-### Step 3：启动 PostgreSQL 数据库
+### Step 3：下载数据库 Dump
 
-**前提：** 下载 BIRD-CRITIC 官方数据库 dump（`postgre_table_dumps.zip`，~281MB）
+`postgre_table_dumps/` 目录因文件体积过大（单文件最大 267MB）未纳入 Git 仓库，需从官方渠道单独下载：
+
+**官方地址：** https://bird-critic.github.io/
+
+在页面找到 **PostgreSQL Database** 下载入口，下载后解压，将 `postgre_table_dumps/` 目录放到本仓库根目录下：
+
+```
+swe-sql-kit/
+└── postgre_table_dumps/
+    ├── card_games_template/
+    ├── financial_template/
+    └── ...（共 15 个数据库）
+```
+
+### Step 4：启动 PostgreSQL 数据库
 
 ```bash
 # 修改 DUMPS_DIR 后运行
@@ -120,13 +134,13 @@ docker exec bird_critic_pg psql -U root -c "\l" | grep template
 # 应能看到 financial_template, card_games_template 等 15 个数据库
 ```
 
-### Step 4：验证运行（10条）
+### Step 5：验证运行（10条）
 
 ```bash
 python run_pipeline.py --limit 10
 ```
 
-### Step 5：全量运行（训练集 451 条）
+### Step 6：全量运行（训练集 451 条）
 
 ```bash
 # nothinking 模式（路径 A）
