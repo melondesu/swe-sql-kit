@@ -233,7 +233,7 @@ python src/sft/extract_sft_B.py \
 
 ### Pipeline 全量结果（DeepSeek-V3，530 条）
 
-论文 Baseline（BIRD-CRITIC-PG 官方报告，DeepSeek-V3）：**~20.4%**
+论文 Baseline（BIRD-CRITIC-PG 官方报告，DeepSeek-V3）：**~27.17%**
 
 ```
 本框架 Pipeline 总通过率：326/530 = 61.5%（超越论文 Baseline 约 3 倍）
