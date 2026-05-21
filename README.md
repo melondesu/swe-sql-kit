@@ -186,6 +186,18 @@ Stage 3: SQL-ACT Agent ───── [EXPLORE] 探测数据库（SAVEPOINT 回
 
 每个 instance 在独立的临时数据库副本上运行，跑完自动清理，防止 Management 类任务的跨实例污染。
 
+### Thinking 模式
+
+通过 `--thinking on/off` 控制模型是否开启 extended thinking（`<think>...</think>`）。实验表明各阶段对 thinking 的响应差异显著：
+
+| 阶段 | thinking 效果 | 通过率变化 | 延迟变化 |
+|------|-------------|---------|--------|
+| Stage1 | 负面 | -8.7pp | +158% |
+| Stage2 | **正面** | **+7.3pp** | +9% |
+| Stage3 | 中性 | -0.4pp | +422% |
+
+**结论**：Stage2（N-path 多路径生成）是 thinking 的最佳应用场景；Stage1 和 Stage3 开启 thinking 性价比极低。
+
 ---
 
 ## SFT 数据构造
@@ -243,6 +255,15 @@ python src/sft/extract_sft_B.py \
   stage3（SQL-ACT ReAct）：    86 题 (16.2%)
   未通过（unsolved）：         204 题 (38.5%)
 ```
+
+### Thinking 开关对比（Qwen3.5-27B，训练集 ~451 条）
+
+| 配置 | Stage1 SR | Stage2 SR | Stage3 SR | **最终 SR** | 平均总延迟 |
+|------|---------|---------|---------|---------|---------|
+| v5_0a（nothinking） | **36.9%** | 13.5% | 21.0% | 71.9% | 81s |
+| v5_0b（thinking 全开） | 28.2% | **20.8%** | **22.6%** | **72.0%** | 250s |
+
+thinking 全开使总延迟增加约 3 倍，最终通过率基本持平（+0.1pp）。Stage1 通过率显著下降（-8.7pp），Stage2 显著提升（+7.3pp），Stage3 略有提升（+1.6pp）但延迟暴增 422%，整体性价比极低。
 
 ### SFT 微调结果（Qwen2.5-Coder-7B-Instruct，验证集 79 条）
 
