@@ -1,0 +1,35 @@
+### Model Config
+model_name_or_path: ../models/qwen/Qwen2___5-Coder-7B-Instruct
+
+### Data Config
+template: qwen
+dataset: sft_B_multi
+cutoff_len: 4096
+overwrite_cache: true
+
+### Training Config
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_rank: 8
+lora_alpha: 16
+lora_target: all
+
+### Optimization
+learning_rate: 5.0e-5
+num_train_epochs: 3
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+warmup_ratio: 0.1
+weight_decay: 0.0
+bf16: true
+
+### Save & Eval
+save_steps: 100
+save_strategy: steps
+save_total_limit: 3
+output_dir: ./output/B_multi
+logging_steps: 10
+
+### Misc
+seed: 42

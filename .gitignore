@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# LLaMA-Factory submodule (体积过大，单独管理)
+finetuning/LLaMA-Factory/
+
+# Model weights (体积过大)
+models/
+
+# Database dumps (体积过大，从官方渠道单独下载)
+# 官方下载：https://bird-bench.github.io/
+postgre_table_dumps/
+
+# Logs
+logs/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Secrets
+config.json

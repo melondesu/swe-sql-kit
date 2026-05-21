@@ -1,0 +1,50 @@
+{
+  "model": "Qwen/Qwen3.5-27B",
+  "version": "v3-sqlact",
+  "sample_size": 91,
+  "stage0_sr": 1.1,
+  "stage1_sr": 41.76,
+  "stage2_sr": 12.09,
+  "stage3_sr": 25.27,
+  "final_sr": 80.22,
+  "delta_vs_paper_pp": 52.48,
+  "first_pass_stage_distribution": {
+    "stage3": 23,
+    "stage1": 38,
+    "stage2": 11,
+    "none": 18,
+    "stage0": 1
+  },
+  "npath_selection_distribution": {
+    "diagnostic": 32,
+    "rewrite": 8,
+    "diagnostic(fallback)": 9,
+    "minimal_fix": 3
+  },
+  "by_category": {
+    "Query": {
+      "n": 61,
+      "stage0_sr": 1.6,
+      "stage1_sr": 41.0,
+      "stage2_sr": 13.1,
+      "stage3_sr": 27.9,
+      "final_sr": 83.6
+    },
+    "Personalization": {
+      "n": 22,
+      "stage0_sr": 0.0,
+      "stage1_sr": 36.4,
+      "stage2_sr": 4.5,
+      "stage3_sr": 22.7,
+      "final_sr": 63.6
+    },
+    "Management": {
+      "n": 8,
+      "stage0_sr": 0.0,
+      "stage1_sr": 62.5,
+      "stage2_sr": 25.0,
+      "stage3_sr": 12.5,
+      "final_sr": 100.0
+    }
+  }
+}

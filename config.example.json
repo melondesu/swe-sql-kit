@@ -1,0 +1,9 @@
+{
+  "LLM_API_KEY":  "your-api-key-here",
+  "LLM_BASE_URL": "https://api.siliconflow.cn/v1",
+  "LLM_MODEL":    "Qwen/Qwen2.5-72B-Instruct",
+  "PG_HOST":      "localhost",
+  "PG_PORT":      5432,
+  "PG_USER":      "root",
+  "PG_PASSWORD":  "123123"
+}
