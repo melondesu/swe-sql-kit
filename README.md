@@ -1,6 +1,6 @@
 # SWE-SQL+ 实验框架
 
-基于 BIRD-CRITIC-PG 基准，实现 4-Stage Pipeline 超越论文 Baseline。
+基于 BIRD-CRITIC-PG 基准，实现 4-Stage Pipeline 超越论文 Baseline；并以 Pipeline 产出的成功轨迹为 SFT 数据，对 Qwen2.5-Coder-7B-Instruct 进行 LoRA 微调，使小模型在验证集上的 Agent 成功率超越基座模型。
 
 ---
 
@@ -106,9 +106,9 @@ pip install -r requirements.txt
 
 `postgre_table_dumps/` 目录因文件体积过大（单文件最大 267MB）未纳入 Git 仓库，需从官方渠道单独下载：
 
-**官方地址：** https://bird-critic.github.io/
+**官方地址：** https://huggingface.co/datasets/birdsql/bird-critic-1.0-postgresql
 
-在页面找到 **PostgreSQL Database** 下载入口，下载后解压，将 `postgre_table_dumps/` 目录放到本仓库根目录下：
+下载后解压，将 `postgre_table_dumps/` 目录放到本仓库根目录下：
 
 ```
 swe-sql-kit/
@@ -233,29 +233,32 @@ python src/sft/extract_sft_B.py \
 
 ### Pipeline 全量结果（DeepSeek-V3，530 条）
 
+论文 Baseline（BIRD-CRITIC-PG 官方报告，DeepSeek-V3）：**~20.4%**
+
 ```
-总通过率：326/530 = 61.5%
-  stage0（直接提交原始 SQL）：6 题  (1.1%)
-  stage1（CoT 单轮推理）：   162 题 (30.6%)
-  stage2（N-path 三路并行）：  72 题 (13.6%)
-  stage3（SQL-ACT ReAct）：   86 题 (16.2%)
-  未通过（unsolved）：        204 题 (38.5%)
+本框架 Pipeline 总通过率：326/530 = 61.5%（超越论文 Baseline 约 3 倍）
+  stage0（直接提交原始 SQL）：  6 题  (1.1%)
+  stage1（CoT 单轮推理）：    162 题 (30.6%)
+  stage2（N-path 三路并行）：   72 题 (13.6%)
+  stage3（SQL-ACT ReAct）：    86 题 (16.2%)
+  未通过（unsolved）：         204 题 (38.5%)
 ```
 
-### SFT 微调结果（Qwen2.5-Coder-7B，验证集 79 条）
+### SFT 微调结果（Qwen2.5-Coder-7B-Instruct，验证集 79 条）
 
 | 模型 | 数据类型 | 单轮 SR | Agent SR |
 |------|---------|---------|---------|
-| Qwen2.5-Coder-7B（基座，无微调） | — | 12.7% | — |
-| A_single | non-thinking 单轮 | 7.6% | — |
-| B_single | thinking 单轮 | 12.7% | — |
-| A_multi | non-thinking 多轮 | 10.1% | ~20% |
-| B_multi | thinking 多轮 | 13.9% | 20.3% |
+| Qwen2.5-Coder-7B（基座，无微调） | — | **5.1%** (4/79) | — |
+| A_single | non-thinking 单轮 | 7.6% (6/79) | — |
+| B_single | thinking 单轮 | 12.7% (10/79) | — |
+| A_multi | non-thinking 多轮 | 10.1% (8/79) | **17.7%** (14/79) |
+| B_multi | thinking 多轮 | 13.9% (11/79) | **20.3%** (16/79) |
 
 **关键结论**：
-1. thinking 数据（B 系列）≥ non-thinking 数据（A 系列）
-2. Agent 模式显著提升 SR：B_multi Agent(20.3%) vs B_multi 单轮(13.9%)
-3. 多轮 trajectory 数据对 Agent 模式有帮助
+1. 所有微调模型均超越基座（5.1%），B_multi Agent 达到 **20.3%**，提升约 4 倍
+2. thinking 数据（B 系列）> non-thinking 数据（A 系列）
+3. Agent 第二阶段显著提升 SR：B_multi Agent(20.3%) vs B_multi 单轮(13.9%)，对 Management 类别提升尤为显著（10%→30%）
+4. 多轮 trajectory 数据对 Agent 模式有帮助
 
 ---
 
